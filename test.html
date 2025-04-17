@@ -2,62 +2,146 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Final Boss Horor Mode</title>
+  <title>Final Boss Light Mode</title>
   <style>
     body {
+      font-family: monospace, monospace;
       background: black;
       color: lime;
-      font-family: 'Courier New', monospace;
       text-align: center;
-      padding-top: 50px;
+      padding: 50px;
       overflow: hidden;
     }
+
     h1 {
-      font-size: 3em;
       animation: glitch 0.3s infinite;
+      font-size: 3em;
     }
+
+    p {
+      font-size: 1.2em;
+    }
+
     @keyframes glitch {
       0% { text-shadow: 2px 2px red; }
       50% { text-shadow: -2px -2px blue; }
       100% { text-shadow: 2px 2px red; }
     }
+
+    /* Fake Terminal Styles */
+    #terminal {
+      width: 90%;
+      height: 200px;
+      margin: 20px auto;
+      background: #111;
+      color: #0f0;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      font-size: 1.2em;
+      line-height: 1.5;
+      display: block;
+      text-align: left;
+    }
+
+    .blink {
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    /* BSOD Effect */
+    #bsod {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: blue;
+      color: white;
+      display: none;
+      text-align: center;
+      padding-top: 150px;
+      font-size: 2em;
+      z-index: 9999;
+    }
   </style>
 </head>
 <body>
-  <h1>FINAL BOSS HAS AWAKENED</h1>
-  <p>System Intrusion Detected...</p>
+  <h1>FINAL BOSS LIGHT MODE</h1>
+  <p>CPU heating... RAM pressure... System panic!</p>
 
-  <audio id="sfx" autoplay loop>
-    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_61c51be51c.mp3" type="audio/mp3">
-  </audio>
+  <div id="terminal">
+    <span id="output"></span><span class="blink">_</span>
+  </div>
+
+  <!-- BSOD Div -->
+  <div id="bsod">
+    <h2>**STOP: SYSTEM FAILURE**</h2>
+    <p>A fatal error has occurred.<br> SYSTEM CRASHING...</p>
+  </div>
 
   <script>
-    let pressure = [];
+    // Fake terminal script
+    let terminalOutput = document.getElementById('output');
+    let terminalText = [
+      "Loading... Please wait.\n",
+      "Initializing system...\n",
+      "Error: Critical system overload.\n",
+      "Running diagnostics...\n",
+      "Warning: CPU overheating!\n",
+      "Memory usage: 85%\n",
+      "Virus detected: Final Boss Protocol activated!\n",
+      "System breach imminent...\n"
+    ];
+    let currentLine = 0;
+
+    function typeEffect() {
+      if (currentLine < terminalText.length) {
+        let currentText = terminalText[currentLine];
+        let i = 0;
+        let interval = setInterval(() => {
+          terminalOutput.textContent += currentText[i];
+          i++;
+          if (i >= currentText.length) {
+            clearInterval(interval);
+            currentLine++;
+            setTimeout(typeEffect, 500); // Wait before next line
+          }
+        }, 100);
+      }
+    }
+
+    // Start terminal output
+    typeEffect();
+
+    // Trigger BSOD after some time (5 seconds)
+    setTimeout(() => {
+      document.getElementById('bsod').style.display = 'block'; // Show BSOD
+    }, 5000);
+
+    // Ringan tapi bikin deg-degan untuk CPU + memory
+    let spam = [];
     let i = 0;
 
+    // Sedikit beban CPU + memory (tapi aman)
     setInterval(() => {
-      pressure.push(new Array(1000).fill("ERROR_" + i++));
-      console.log("Corrupting memory sector", i);
-    }, 120);
-
-    setInterval(() => {
-      document.body.style.background = `hsl(${Math.random() * 360}, 100%, 5%)`;
+      spam.push(new Array(1000).fill("YOU_CAN'T_ESCAPE_" + i++));
+      console.log("Pressure rising:", i);
     }, 100);
 
+    // Efek visual aneh-aneh
     setInterval(() => {
-      const messages = [
-        "FINAL BOSS HAS AWAKENED",
-        "SYSTEM BREACH",
-        "EVACUATE NOW",
-        "CORRUPTION: 98%",
-        "UNKNOWN SIGNAL..."
-      ];
-      document.querySelector("h1").textContent = messages[Math.floor(Math.random() * messages.length)];
-    }, 400);
+      document.body.style.background = `hsl(${Math.random() * 360}, 100%, 10%)`;
+    }, 150);
 
+    // Glitch tulisan
     setInterval(() => {
-      alert("!! CRITICAL ERROR: SYSTEM CORE EXPOSED !!");
-    }, 15000);
+      document.querySelector("h1").textContent = "FINAL BOSS MODE " + (Math.random() > 0.5 ? "ENGAGED" : "STANDBY");
+    }, 300);
   </script>
 </body>
 </html>
